@@ -25,7 +25,21 @@
 > 每个gpu有若干个sm，每个sm独立工作  sm包括若干个simple processor和memory，simple processor用来处理线程。
 
 ![GPU模型](https://github.com/zhuangzhuangsun/CUDA/blob/master/gpu.jpg)
+
+红色的方框代表一个simple processor
+
+绿色的方框代表memory
+
+蓝色的方框代表流处理器
 ## CUDA内存模型 ##
+![](https://github.com/zhuangzhuangsun/CUDA/blob/master/memory_model.jpg)
+
+- 每一个线程都有一个本地memory
+- 每一个线程块都有一个共享memory
+- 多个线程块之间有global memory
+- global memory和host memory之间互相通信
+- 内存读取速度比较：local>shared>>global>host
+
 ## CUDA编程模型 ##
 1. 对线程块分配到哪里运行不做保证，不保证何时运行完
 2. 所有在同一个线程块上的线程必然会在同一时间同时运行在同一个SM上
@@ -43,6 +57,8 @@ barrier：用来控制多个线程停止与等待，当所有线程都达到了�
 2. CPU给GPU复制数据(cudamemcpy)
 3. 加载kernel给GPU
 4. CPU把GPU计算结果复制回来(cudamemcpy)
+
+![](https://github.com/zhuangzhuangsun/CUDA/blob/master/program_compile_model.jpg)
 ## 例程 ##
     #include <stdio.h>
     __global__ void square(float* d_out,float* d_in){
